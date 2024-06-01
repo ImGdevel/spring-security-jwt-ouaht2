@@ -56,10 +56,11 @@ public class SecurityConfig {
 
         http.authorizeHttpRequests((auth) -> auth
                         .requestMatchers("/", "/login", "/join").permitAll()
-                        .requestMatchers("/admin").hasAnyRole("ADMIN")
+
+                        .requestMatchers("/admin").authenticated()
                         .requestMatchers("/api/**").hasAnyRole("USER")
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-resources/**", "/api/**").permitAll() // 임시 swagger 허용
-                        .anyRequest().denyAll()
+                        .anyRequest().authenticated()
                 )
                 .formLogin((auth) -> auth
                         .disable()
