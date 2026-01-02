@@ -4,14 +4,10 @@ import com.study.security.application.security.common.constants.SecurityConstant
 import com.study.security.application.security.local.filter.CustomLoginAuthenticationFilter;
 import com.study.security.application.security.local.filter.CustomLogoutFilter;
 import com.study.security.application.security.exception.filter.FilterChainExceptionFilter;
-import com.study.security.application.security.jwt.filter.JwtAuthenticationFilter;
 import com.study.security.application.security.exception.handler.CustomAccessDeniedHandler;
 import com.study.security.application.security.exception.handler.CustomAuthenticationEntryPoint;
 import com.study.security.application.security.local.handler.LoginFailureHandler;
 import com.study.security.application.security.local.handler.LoginSuccessHandler;
-import com.study.security.application.security.oauth.handler.OAuthLoginSuccessHandler;
-import com.study.security.application.security.oauth.repository.HttpCookieOAuth2AuthorizationRequestRepository;
-import com.study.security.application.security.oauth.service.OAuthLoginService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -39,10 +35,8 @@ public class SecurityConfig {
     private final CustomAccessDeniedHandler accessDeniedHandler;
     private final FilterChainExceptionFilter filterChainExceptionFilter;
     private final CustomLogoutFilter customLogoutFilter;
-    private final JwtAuthenticationFilter jwtAuthenticationFilter;
-    private final OAuthLoginSuccessHandler oAuthLoginSuccessHandler;
-    private final OAuthLoginService oAuthLoginService;
-    private final HttpCookieOAuth2AuthorizationRequestRepository authorizationRequestRepository;
+    private final JwtSecurityConfig jwtSecurityConfig;
+    private final OAuth2SecurityConfig oAuth2SecurityConfig;
 
     @Bean
     public AuthenticationManager authenticationManager() throws Exception {
@@ -78,26 +72,9 @@ public class SecurityConfig {
 
                 .formLogin(AbstractHttpConfigurer::disable)
 
-                ///  [OAuth 로그인 설정]
-                .oauth2Login(oauth2 -> oauth2
-                        .userInfoEndpoint(userInfo -> userInfo
-                                .userService(oAuthLoginService)
-                        )
-                        .authorizationEndpoint(auth -> auth
-                                .authorizationRequestRepository(authorizationRequestRepository)
-                        )
-                        .successHandler(oAuthLoginSuccessHandler)
-                )
-
                 /// -> 커스텀 일반 로그인 필터]
                 .addFilterAt(
                         createLoginAuthenticationFilter(authenticationManager()),
-                        UsernamePasswordAuthenticationFilter.class
-                )
-
-                /// JWT 인증 필터 추가
-                .addFilterBefore(
-                        jwtAuthenticationFilter,
                         UsernamePasswordAuthenticationFilter.class
                 )
 
@@ -120,6 +97,9 @@ public class SecurityConfig {
                 )
 
         ;
+
+        jwtSecurityConfig.configure(http);
+        oAuth2SecurityConfig.configure(http);
 
         return http.build();
     }

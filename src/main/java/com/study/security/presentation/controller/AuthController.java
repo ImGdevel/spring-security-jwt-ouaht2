@@ -4,12 +4,12 @@ import com.study.security.application.security.local.dto.SignupRequest;
 import com.study.security.presentation.controller.docs.AuthApiDocs;
 import com.study.security.presentation.dto.request.LoginRequest;
 import com.study.security.presentation.dto.response.CheckAvailabilityResponse;
-import com.study.security.presentation.dto.response.LoginResponse;
+import com.study.security.application.security.local.dto.LoginResponse;
 import com.study.security.presentation.dto.response.RefreshTokenResponse;
 import com.study.security.application.security.local.service.SignupService;
 import com.study.security.application.security.jwt.service.TokenBlacklistService;
 import com.study.security.application.security.jwt.service.TokenRefreshService;
-import com.study.security.application.security.common.util.CookieProvider;
+import com.study.security.application.security.jwt.provider.JwtCookieProvider;
 import com.study.security.common.dto.api.ApiResponse;
 import com.study.security.common.exception.BusinessException;
 import com.study.security.common.exception.code.AuthErrorCode;
@@ -39,7 +39,7 @@ public class AuthController implements AuthApiDocs {
 
     private final TokenRefreshService tokenRefreshService;
     private final TokenBlacklistService blacklistService;
-    private final CookieProvider cookieProvider;
+    private final JwtCookieProvider jwtCookieProvider;
     private final MemberRepository memberRepository;
     private final SignupService signupService;
 
@@ -54,7 +54,7 @@ public class AuthController implements AuthApiDocs {
 
     @PostMapping("/refresh")
     public ResponseEntity<ApiResponse<RefreshTokenResponse>> refreshToken(HttpServletRequest request) {
-        String refreshToken = cookieProvider.getRefreshTokenFromCookie(request)
+        String refreshToken = jwtCookieProvider.getRefreshTokenFromCookie(request)
                 .orElseThrow(() -> new BusinessException(AuthErrorCode.REFRESH_TOKEN_NOT_FOUND));
 
         String newAccessToken = tokenRefreshService.refreshAccessToken(refreshToken);

@@ -2,8 +2,9 @@ package com.study.security.application.security.oauth.handler;
 
 import com.study.security.application.security.oauth.dto.CustomOAuthUserDetails;
 import com.study.security.application.security.oauth.repository.HttpCookieOAuth2AuthorizationRequestRepository;
-import com.study.security.application.security.common.util.CookieProvider;
+import com.study.security.application.security.jwt.provider.JwtCookieProvider;
 import com.study.security.application.security.jwt.provider.JwtTokenProvider;
+import com.study.security.application.security.oauth.cookie.OAuth2CookieProvider;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -19,7 +20,8 @@ import org.springframework.stereotype.Component;
 public class OAuthLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     private final JwtTokenProvider jwtTokenProvider;
-    private final CookieProvider cookieProvider;
+    private final JwtCookieProvider jwtCookieProvider;
+    private final OAuth2CookieProvider oAuth2CookieProvider;
     private final HttpCookieOAuth2AuthorizationRequestRepository authorizationRequestRepository;
 
     @Override
@@ -30,7 +32,7 @@ public class OAuthLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHand
         Long memberId = oAuth2User.getUid();
 
         String refreshToken = jwtTokenProvider.generateRefreshToken(memberId);
-        cookieProvider.addRefreshTokenCookie(response, refreshToken);
+        jwtCookieProvider.addRefreshTokenCookie(response, refreshToken);
 
         String redirectUri = determineTargetUrl(request);
         authorizationRequestRepository.removeAuthorizationRequestCookies(response);
@@ -41,7 +43,7 @@ public class OAuthLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHand
     }
 
     private String determineTargetUrl(HttpServletRequest request) {
-        return CookieProvider.getRedirectUriCookie(request)
+        return oAuth2CookieProvider.getRedirectUriCookie(request)
                 .orElse("http://localhost:3000") + "/oauth/callback";
     }
 }

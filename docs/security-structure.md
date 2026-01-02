@@ -1,0 +1,66 @@
+# Security 모듈 구조 트리
+
+- `src/main/java/com/study/security/application/security`
+  - `annotation/`
+    - `CurrentUser`: 컨트롤러 메서드 파라미터에서 현재 사용자 주입용 어노테이션.
+  - `resolver/`
+    - `CurrentUserArgumentResolver`: `CurrentUser`를 처리하는 리졸버.
+  - `config/`
+    - `SecurityConfig`: 필터 체인 구성, URL 접근 제어, OAuth2 설정, 커스텀 로그인/로그아웃/예외 필터 등록.
+    - `JwtSecurityConfig`: JWT 인증 필터를 필터 체인에 등록하는 구성 조각.
+    - `OAuth2SecurityConfig`: OAuth2 로그인(userService/authorizationRequestRepository/successHandler) 구성 조각.
+    - `PasswordEncoderConfig`: 비밀번호 인코더 빈 정의.
+    - `CorsConfig`: CORS 설정 빈 정의.
+    - `WebConfig`: `CurrentUserArgumentResolver` 등록 등 MVC 설정.
+    - `config/properties/CorsProperties`: 허용 오리진을 담는 설정 프로퍼티.
+  - `common/`
+    - `constants/`
+      - `SecurityConstants`: 로그인/로그아웃/회원가입/리프레시 URL과 공개/보호/관리자 URL 패턴 정의.
+      - `JwtConstants`: JWT 클레임 키 및 토큰 타입 상수.
+    - `util/`
+      - `RedirectUriValidator`: 허용 오리진 기반 redirect URI 검증.
+      - `SecurityResponseSender`: 시큐리티 필터/핸들러 공통 JSON 응답 전송.
+  - `exception/`
+    - `filter/FilterChainExceptionFilter`: 필터 체인 전역 예외 포착 후 500 응답.
+    - `handler/CustomAuthenticationEntryPoint`: 인증 실패 401 응답 처리.
+    - `handler/CustomAccessDeniedHandler`: 인가 실패 403 응답 처리.
+    - `exception/CustomAccessDeniedException`, `CustomAuthenticationException`: 커스텀 예외 정의.
+  - `jwt/`
+    - `common/JwtCookieConstants`: JWT(Refresh Token) 쿠키 관련 상수.
+    - `properties/JwtProperties`: 시크릿/만료시간 설정 바인딩.
+    - `provider/JwtTokenProvider`: 토큰 생성·검증, 클레임 추출, 만료 검사.
+    - `provider/JwtCookieProvider`: Refresh Token 쿠키 발급/조회/삭제.
+    - `filter/JwtAuthenticationFilter`: HTTP Authorization 헤더의 Bearer 토큰 검증 후 `SecurityContext` 설정.
+    - `repository/TokenBlacklistStore`: 블랙리스트 저장소 포트.
+    - `repository/impl/RedisTokenBlacklistStore`: `RedisService`를 사용해 블랙리스트 키 TTL 저장/조회 어댑터.
+    - `service/TokenBlacklistService`: 리프레시 토큰 해시 키 생성 후 블랙리스트 등록/조회.
+    - `service/TokenRefreshService`: 리프레시 토큰 검증·블랙리스트 확인 후 액세스 토큰 재발급.
+  - `local/` (폼 로그인)
+    - `dto/CustomUserDetails`, `SignupRequest`: 사용자 인증 정보/회원가입 요청 DTO.
+    - `filter/CustomLoginAuthenticationFilter`: `/auth/login` JSON 본문 파싱 후 인증 시도.
+    - `filter/CustomLogoutFilter`: `/auth/logout` POST 요청에서 로그아웃 처리 위임.
+    - `handler/LoginSuccessHandler`, `LoginFailureHandler`: 로그인 성공 시 토큰 발급·쿠키 설정 및 실패 응답 처리.
+    - `handler/LogoutHandler`: 로그아웃 시 컨텍스트 클리어, 리프레시 토큰 블랙리스트 등록·쿠키 삭제.
+    - `service/LoginService`: 이메일 기반 `UserDetailsService` 구현, 비활성 사용자 차단.
+    - `service/SignupService`: 회원가입 검증 후 사용자 생성, 액세스 토큰 발급.
+  - `oauth/`
+    - `common/OAuth2CookieConstants`: OAuth2 플로우 쿠키 관련 상수.
+    - `cookie/OAuth2CookieProvider`: OAuth2 auth request/redirect URI 쿠키 발급·조회·삭제.
+    - `config/OAuth2ClientConfig`: OAuth2 클라이언트 등록/설정.
+    - `provider/*UserInfo`, `OAuthUserInfoFactory`: 공급자별 프로필 파싱.
+    - `dto/CustomOAuthUserDetails`: OAuth2 인증 후 담는 간단한 사용자 정보.
+    - `handler/OAuthLoginSuccessHandler`: OAuth 로그인 성공 시 토큰 발급/리다이렉트 처리.
+    - `repository/HttpCookieOAuth2AuthorizationRequestRepository`: OAuth2 auth request를 쿠키에 직렬화/저장.
+    - `service/OAuthLoginService`: OAuth 사용자 정보 로드, 신규 회원 등록/로그인 처리.
+  - `user/`
+    - `dto/UserAccount`: 애플리케이션 레이어 사용자 모델.
+    - `repository/UserRepositoryPort`: 사용자 조회/저장 포트.
+    - `repository/impl/UserPersistenceAdapter`: 도메인 레포지토리 어댑터.
+    - `validator/AuthValidator`: 회원가입 시 이메일/닉네임 중복 검증.
+
+- `src/main/java/com/study/security/presentation/controller/AuthController`
+  - `/auth` 엔드포인트 집합. 회원가입, 토큰 재발급, 블랙리스트 등록, 로그인/로그아웃 위임, 이메일·닉네임 중복 체크를 제공하며 필터/핸들러가 처리하는 로그인/로그아웃 엔드포인트는 `UnsupportedOperationException`으로 위임 표시.
+
+- `src/main/java/com/study/security/domain/member` (Security 모듈이 의존하는 도메인)
+  - `entity/Member`, `MemberRole`, `oauth/OAuthMember`: 사용자/역할 엔티티.
+  - `repository/MemberRepository`, `OAuthMemberRepository`: 도메인 레포지토리로 로그인/회원가입/OAuth 처리에 사용.

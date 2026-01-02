@@ -1,4 +1,4 @@
-package com.study.security.application.security.exception.exception;
+package com.study.security.application.security.exception.model;
 
 import com.study.security.common.exception.ErrorCode;
 import org.springframework.security.core.AuthenticationException;

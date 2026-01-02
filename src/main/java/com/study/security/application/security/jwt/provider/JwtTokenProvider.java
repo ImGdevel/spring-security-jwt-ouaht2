@@ -1,7 +1,7 @@
 package com.study.security.application.security.jwt.provider;
 
 import com.study.security.application.security.jwt.properties.JwtProperties;
-import com.study.security.application.security.common.constants.JwtConstants;
+import com.study.security.application.security.jwt.common.JwtTokenConstants;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -29,8 +29,8 @@ public class JwtTokenProvider {
 
         return Jwts.builder()
                 .subject(String.valueOf(memberId))
-                .claim(JwtConstants.CLAIM_ROLE, role)
-                .claim(JwtConstants.CLAIM_TYPE, JwtConstants.TOKEN_TYPE_ACCESS)
+                .claim(JwtTokenConstants.CLAIM_ROLE, role)
+                .claim(JwtTokenConstants.CLAIM_TYPE, JwtTokenConstants.TOKEN_TYPE_ACCESS)
                 .issuedAt(now)
                 .expiration(expiryDate)
                 .signWith(secretKey, Jwts.SIG.HS256)
@@ -43,7 +43,7 @@ public class JwtTokenProvider {
 
         return Jwts.builder()
                 .subject(String.valueOf(memberId))
-                .claim(JwtConstants.CLAIM_TYPE, JwtConstants.TOKEN_TYPE_REFRESH)
+                .claim(JwtTokenConstants.CLAIM_TYPE, JwtTokenConstants.TOKEN_TYPE_REFRESH)
                 .issuedAt(now)
                 .expiration(expiryDate)
                 .signWith(secretKey, Jwts.SIG.HS256)
@@ -65,12 +65,12 @@ public class JwtTokenProvider {
 
     public String getRoleFromToken(String token) {
         Claims claims = validateToken(token);
-        return claims.get(JwtConstants.CLAIM_ROLE, String.class);
+        return claims.get(JwtTokenConstants.CLAIM_ROLE, String.class);
     }
 
     public String getTokenType(String token) {
         Claims claims = validateToken(token);
-        return claims.get(JwtConstants.CLAIM_TYPE, String.class);
+        return claims.get(JwtTokenConstants.CLAIM_TYPE, String.class);
     }
 
     public Date getExpiration(String token){
@@ -84,11 +84,11 @@ public class JwtTokenProvider {
     }
 
     public boolean isAccessToken(String token) {
-        return JwtConstants.TOKEN_TYPE_ACCESS.equals(getTokenType(token));
+        return JwtTokenConstants.TOKEN_TYPE_ACCESS.equals(getTokenType(token));
     }
 
     public boolean isRefreshToken(String token) {
-        return JwtConstants.TOKEN_TYPE_REFRESH.equals(getTokenType(token));
+        return JwtTokenConstants.TOKEN_TYPE_REFRESH.equals(getTokenType(token));
     }
 
     public boolean isTokenExpired(String token) {

@@ -1,6 +1,6 @@
-package com.study.security.application.security.common.constants;
+package com.study.security.application.security.jwt.common;
 
-public class JwtConstants {
+public class JwtTokenConstants {
 
     public static final String TOKEN_TYPE_ACCESS = "access";
     public static final String TOKEN_TYPE_REFRESH = "refresh";

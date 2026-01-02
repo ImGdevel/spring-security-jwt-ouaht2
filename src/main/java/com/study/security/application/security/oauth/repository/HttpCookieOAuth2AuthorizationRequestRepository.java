@@ -1,8 +1,8 @@
 package com.study.security.application.security.oauth.repository;
 
-import com.study.security.application.security.common.constants.CookieConstants;
-import com.study.security.application.security.common.util.CookieProvider;
 import com.study.security.application.security.common.util.RedirectUriValidator;
+import com.study.security.application.security.oauth.common.OAuth2CookieConstants;
+import com.study.security.application.security.oauth.cookie.OAuth2CookieProvider;
 import com.study.security.common.utils.SerializationUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -18,10 +18,11 @@ import org.springframework.util.StringUtils;
 public class HttpCookieOAuth2AuthorizationRequestRepository implements AuthorizationRequestRepository<OAuth2AuthorizationRequest> {
 
     private final RedirectUriValidator redirectUriValidator;
+    private final OAuth2CookieProvider oAuth2CookieProvider;
 
     @Override
     public OAuth2AuthorizationRequest loadAuthorizationRequest(HttpServletRequest request) {
-        return CookieProvider.getOAuth2AuthorizationRequestCookie(request)
+        return oAuth2CookieProvider.getOAuth2AuthorizationRequestCookie(request)
                 .map(value -> SerializationUtil.deserialize(value, OAuth2AuthorizationRequest.class))
                 .orElse(null);
     }
@@ -32,11 +33,11 @@ public class HttpCookieOAuth2AuthorizationRequestRepository implements Authoriza
             removeAuthorizationRequestCookies(response);
             return;
         }
-        CookieProvider.addOAuth2AuthorizationRequestCookie(response, SerializationUtil.serialize(authorizationRequest));
+        oAuth2CookieProvider.addOAuth2AuthorizationRequestCookie(response, SerializationUtil.serialize(authorizationRequest));
 
-        String redirectUriAfterLogin = request.getParameter(CookieConstants.REDIRECT_URI_COOKIE_NAME);
+        String redirectUriAfterLogin = request.getParameter(OAuth2CookieConstants.REDIRECT_URI_COOKIE_NAME);
         if (StringUtils.hasText(redirectUriAfterLogin) && redirectUriValidator.isValidRedirectUri(redirectUriAfterLogin)) {
-            CookieProvider.addRedirectUriCookie(response, redirectUriAfterLogin);
+            oAuth2CookieProvider.addRedirectUriCookie(response, redirectUriAfterLogin);
         }
     }
 
@@ -46,7 +47,7 @@ public class HttpCookieOAuth2AuthorizationRequestRepository implements Authoriza
     }
 
     public void removeAuthorizationRequestCookies(HttpServletResponse response) {
-        CookieProvider.deleteOAuth2AuthorizationRequestCookie(response);
-        CookieProvider.deleteRedirectUriCookie(response);
+        oAuth2CookieProvider.deleteOAuth2AuthorizationRequestCookie(response);
+        oAuth2CookieProvider.deleteRedirectUriCookie(response);
     }
 }

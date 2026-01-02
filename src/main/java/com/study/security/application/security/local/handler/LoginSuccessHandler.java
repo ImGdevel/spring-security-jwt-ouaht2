@@ -1,8 +1,8 @@
 package com.study.security.application.security.local.handler;
 
-import com.study.security.presentation.dto.response.LoginResponse;
+import com.study.security.application.security.local.dto.LoginResponse;
 import com.study.security.application.security.local.dto.CustomUserDetails;
-import com.study.security.application.security.common.util.CookieProvider;
+import com.study.security.application.security.jwt.provider.JwtCookieProvider;
 import com.study.security.application.security.jwt.provider.JwtTokenProvider;
 import com.study.security.application.security.common.util.SecurityResponseSender;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,7 +21,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
     private final SecurityResponseSender securityResponseSender;
     private final JwtTokenProvider jwtTokenProvider;
-    private final CookieProvider cookieProvider;
+    private final JwtCookieProvider jwtCookieProvider;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -36,7 +36,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         String accessToken = jwtTokenProvider.generateAccessToken(userId, role);
         String refreshToken = jwtTokenProvider.generateRefreshToken(userId);
 
-        cookieProvider.addRefreshTokenCookie(response, refreshToken);
+        jwtCookieProvider.addRefreshTokenCookie(response, refreshToken);
 
         LoginResponse loginResponse = new LoginResponse(userId, accessToken);
         securityResponseSender.sendSuccess(response, HttpServletResponse.SC_OK, loginResponse, "로그인이 성공했습니다");

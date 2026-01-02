@@ -4,7 +4,7 @@ import com.study.security.application.security.user.dto.UserAccount;
 import com.study.security.application.security.user.repository.UserRepositoryPort;
 import com.study.security.application.security.local.dto.SignupRequest;
 import com.study.security.application.security.user.validator.AuthValidator;
-import com.study.security.presentation.dto.response.LoginResponse;
+import com.study.security.application.security.local.dto.LoginResponse;
 import com.study.security.application.security.jwt.provider.JwtTokenProvider;
 import com.study.security.domain.member.entity.MemberRole;
 import lombok.RequiredArgsConstructor;

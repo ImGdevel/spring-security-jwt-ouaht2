@@ -3,7 +3,7 @@ package com.study.security.presentation.controller.docs;
 import com.study.security.application.security.local.dto.SignupRequest;
 import com.study.security.presentation.dto.request.LoginRequest;
 import com.study.security.presentation.dto.response.CheckAvailabilityResponse;
-import com.study.security.presentation.dto.response.LoginResponse;
+import com.study.security.application.security.local.dto.LoginResponse;
 import com.study.security.presentation.dto.response.RefreshTokenResponse;
 import com.study.security.common.dto.api.ApiResponse;
 import com.study.security.common.swagger.CustomErrorResponseDescription;

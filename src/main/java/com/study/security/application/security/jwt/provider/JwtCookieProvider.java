@@ -1,6 +1,6 @@
-package com.study.security.application.security.common.util;
+package com.study.security.application.security.jwt.provider;
 
-import com.study.security.application.security.common.constants.CookieConstants;
+import com.study.security.application.security.jwt.common.JwtCookieConstants;
 import com.study.security.application.security.jwt.properties.JwtProperties;
 import com.study.security.application.security.common.constants.SecurityConstants;
 import jakarta.servlet.http.Cookie;
@@ -14,48 +14,22 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class CookieProvider {
+public class JwtCookieProvider {
 
     private final JwtProperties jwtProperties;
 
     public void addRefreshTokenCookie(HttpServletResponse response, String refreshToken) {
         long maxAgeInSeconds = jwtProperties.getRefreshTokenExpiration() / 1000;
-        addCookie(response, CookieConstants.REFRESH_TOKEN_COOKIE_NAME, refreshToken,
+        addCookie(response, JwtCookieConstants.REFRESH_TOKEN_COOKIE_NAME, refreshToken,
                   SecurityConstants.REFRESH_TOKEN_URL, maxAgeInSeconds);
     }
 
     public Optional<String> getRefreshTokenFromCookie(HttpServletRequest request) {
-        return getCookie(request, CookieConstants.REFRESH_TOKEN_COOKIE_NAME);
+        return getCookie(request, JwtCookieConstants.REFRESH_TOKEN_COOKIE_NAME);
     }
 
     public void deleteRefreshTokenCookie(HttpServletResponse response) {
-        deleteCookie(response, CookieConstants.REFRESH_TOKEN_COOKIE_NAME, SecurityConstants.REFRESH_TOKEN_URL);
-    }
-
-    public static void addOAuth2AuthorizationRequestCookie(HttpServletResponse response, String value) {
-        addCookie(response, CookieConstants.OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME, value,
-                  "/", CookieConstants.OAUTH2_COOKIE_EXPIRE_SECONDS);
-    }
-
-    public static Optional<String> getOAuth2AuthorizationRequestCookie(HttpServletRequest request) {
-        return getCookie(request, CookieConstants.OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME);
-    }
-
-    public static void deleteOAuth2AuthorizationRequestCookie(HttpServletResponse response) {
-        deleteCookie(response, CookieConstants.OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME, "/");
-    }
-
-    public static void addRedirectUriCookie(HttpServletResponse response, String redirectUri) {
-        addCookie(response, CookieConstants.REDIRECT_URI_COOKIE_NAME, redirectUri,
-                  "/", CookieConstants.OAUTH2_COOKIE_EXPIRE_SECONDS);
-    }
-
-    public static Optional<String> getRedirectUriCookie(HttpServletRequest request) {
-        return getCookie(request, CookieConstants.REDIRECT_URI_COOKIE_NAME);
-    }
-
-    public static void deleteRedirectUriCookie(HttpServletResponse response) {
-        deleteCookie(response, CookieConstants.REDIRECT_URI_COOKIE_NAME, "/");
+        deleteCookie(response, JwtCookieConstants.REFRESH_TOKEN_COOKIE_NAME, SecurityConstants.REFRESH_TOKEN_URL);
     }
 
     private static void addCookie(HttpServletResponse response, String name, String value, String path, long maxAge) {
@@ -64,10 +38,10 @@ public class CookieProvider {
                 .httpOnly(true)
                 .path(path)
                 .maxAge(maxAge)
-                .sameSite(CookieConstants.SAME_SITE_STRICT)
+                .sameSite(JwtCookieConstants.SAME_SITE_STRICT)
                 .build();
 
-        response.addHeader(CookieConstants.SET_COOKIE_HEADER, cookie.toString());
+        response.addHeader(JwtCookieConstants.SET_COOKIE_HEADER, cookie.toString());
     }
 
     private static Optional<String> getCookie(HttpServletRequest request, String name) {
@@ -85,9 +59,9 @@ public class CookieProvider {
                 .httpOnly(true)
                 .path(path)
                 .maxAge(0)
-                .sameSite(CookieConstants.SAME_SITE_STRICT)
+                .sameSite(JwtCookieConstants.SAME_SITE_STRICT)
                 .build();
 
-        response.addHeader(CookieConstants.SET_COOKIE_HEADER, cookie.toString());
+        response.addHeader(JwtCookieConstants.SET_COOKIE_HEADER, cookie.toString());
     }
 }

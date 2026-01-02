@@ -1,4 +1,4 @@
-package com.study.security.presentation.dto.response;
+package com.study.security.application.security.local.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
