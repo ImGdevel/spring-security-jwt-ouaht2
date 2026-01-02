@@ -1,15 +1,15 @@
 package com.study.security.presentation.controller;
 
-import com.study.security.application.member.dto.request.SignupRequest;
+import com.study.security.application.security.local.dto.SignupRequest;
 import com.study.security.presentation.controller.docs.AuthApiDocs;
 import com.study.security.presentation.dto.request.LoginRequest;
 import com.study.security.presentation.dto.response.CheckAvailabilityResponse;
 import com.study.security.presentation.dto.response.LoginResponse;
 import com.study.security.presentation.dto.response.RefreshTokenResponse;
-import com.study.security.application.security.service.SignupService;
-import com.study.security.application.security.service.TokenBlacklistService;
-import com.study.security.application.security.service.TokenRefreshService;
-import com.study.security.application.security.util.CookieProvider;
+import com.study.security.application.security.local.service.SignupService;
+import com.study.security.application.security.jwt.service.TokenBlacklistService;
+import com.study.security.application.security.jwt.service.TokenRefreshService;
+import com.study.security.application.security.common.util.CookieProvider;
 import com.study.security.common.dto.api.ApiResponse;
 import com.study.security.common.exception.BusinessException;
 import com.study.security.common.exception.code.AuthErrorCode;

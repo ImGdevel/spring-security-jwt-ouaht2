@@ -1,6 +1,5 @@
 package com.study.security.application.security.oauth.provider;
 
-import com.study.security.application.security.oauth.OAuthUserInfo;
 import java.util.Map;
 
 public class GithubUserInfo implements OAuthUserInfo {
