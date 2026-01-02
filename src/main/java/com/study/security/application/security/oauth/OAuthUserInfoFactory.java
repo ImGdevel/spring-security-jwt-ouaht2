@@ -1,7 +1,7 @@
-package com.study.security.presentation.dto.oauth;
+package com.study.security.application.security.oauth;
 
-import com.study.security.presentation.dto.oauth.provider.GithubUserInfo;
-import com.study.security.presentation.dto.oauth.provider.GoogleUserInfo;
+import com.study.security.application.security.oauth.provider.GithubUserInfo;
+import com.study.security.application.security.oauth.provider.GoogleUserInfo;
 import java.util.Map;
 
 public class OAuthUserInfoFactory {

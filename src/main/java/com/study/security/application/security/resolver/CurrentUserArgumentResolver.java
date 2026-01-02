@@ -1,7 +1,7 @@
 package com.study.security.application.security.resolver;
 
 import com.study.security.application.security.annotation.CurrentUser;
-import com.study.security.presentation.dto.user.CustomUserDetails;
+import com.study.security.application.security.dto.user.CustomUserDetails;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;
 import org.springframework.security.core.Authentication;

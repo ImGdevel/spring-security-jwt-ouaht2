@@ -1,8 +1,7 @@
 package com.study.security.application.security.service;
 
-import com.study.security.presentation.dto.user.CustomUserDetails;
-import com.study.security.domain.member.entity.Member;
-import com.study.security.domain.member.repository.MemberRepository;
+import com.study.security.application.member.MemberPort;
+import com.study.security.application.security.dto.user.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.DisabledException;
@@ -17,23 +16,23 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class LoginService implements UserDetailsService {
 
-    private final MemberRepository memberRepository;
+    private final MemberPort memberPort;
 
     @Override
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Member member = memberRepository.findByEmail(email)
+        var member = memberPort.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다: " + email));
 
-        if (!member.isActive()) {
+        if (!member.active()) {
             throw new DisabledException("비활성화된 계정입니다");
         }
 
         return new CustomUserDetails(
-                member.getId(),
-                member.getPassword(),
-                member.getRole(),
-                member.isActive()
+                member.id(),
+                member.password(),
+                member.role(),
+                member.active()
         );
     }
 }

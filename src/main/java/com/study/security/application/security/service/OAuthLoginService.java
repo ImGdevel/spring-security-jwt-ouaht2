@@ -1,8 +1,8 @@
 package com.study.security.application.security.service;
 
-import com.study.security.presentation.dto.oauth.OAuthUserInfo;
-import com.study.security.presentation.dto.oauth.OAuthUserInfoFactory;
-import com.study.security.presentation.dto.user.CustomOAuthUserDetails;
+import com.study.security.application.security.oauth.OAuthUserInfo;
+import com.study.security.application.security.oauth.OAuthUserInfoFactory;
+import com.study.security.application.security.dto.user.CustomOAuthUserDetails;
 import com.study.security.domain.member.entity.Member;
 import com.study.security.domain.member.entity.oauth.OAuthMember;
 import com.study.security.domain.member.repository.MemberRepository;

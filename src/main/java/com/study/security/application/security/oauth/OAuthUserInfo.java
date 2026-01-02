@@ -1,4 +1,4 @@
-package com.study.security.presentation.dto.oauth;
+package com.study.security.application.security.oauth;
 
 public interface OAuthUserInfo {
     String getId();

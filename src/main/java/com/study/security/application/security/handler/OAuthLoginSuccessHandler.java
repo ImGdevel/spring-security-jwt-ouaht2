@@ -1,6 +1,6 @@
 package com.study.security.application.security.handler;
 
-import com.study.security.presentation.dto.user.CustomOAuthUserDetails;
+import com.study.security.application.security.dto.user.CustomOAuthUserDetails;
 import com.study.security.application.security.repository.HttpCookieOAuth2AuthorizationRequestRepository;
 import com.study.security.application.security.util.CookieProvider;
 import com.study.security.application.security.util.JwtTokenProvider;

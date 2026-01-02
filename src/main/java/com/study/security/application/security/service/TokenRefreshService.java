@@ -1,11 +1,10 @@
 package com.study.security.application.security.service;
 
+import com.study.security.application.member.MemberPort;
 import com.study.security.application.security.util.JwtTokenProvider;
 import com.study.security.common.exception.BusinessException;
 import com.study.security.common.exception.code.AuthErrorCode;
 import com.study.security.common.exception.code.MemberErrorCode;
-import com.study.security.domain.member.entity.Member;
-import com.study.security.domain.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -18,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class TokenRefreshService {
 
     private final JwtTokenProvider jwtTokenProvider;
-    private final MemberRepository memberRepository;
+    private final MemberPort memberPort;
     private final TokenBlacklistService tokenBlacklistService;
 
     public String refreshAccessToken(String refreshToken) {
@@ -35,13 +34,13 @@ public class TokenRefreshService {
         }
 
         Long memberId = jwtTokenProvider.getUidFromToken(refreshToken);
-        Member member = memberRepository.findById(memberId)
+        var member = memberPort.findById(memberId)
                 .orElseThrow(() -> new BusinessException(MemberErrorCode.USER_NOT_FOUND));
 
-        if (!member.isActive()) {
+        if (!member.active()) {
             throw new BusinessException(MemberErrorCode.MEMBER_INACTIVE);
         }
 
-        return jwtTokenProvider.generateAccessToken(memberId, member.getRole().name());
+        return jwtTokenProvider.generateAccessToken(memberId, member.role().name());
     }
 }

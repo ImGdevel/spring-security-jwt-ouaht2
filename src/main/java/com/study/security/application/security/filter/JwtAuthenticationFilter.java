@@ -1,6 +1,6 @@
 package com.study.security.application.security.filter;
 
-import com.study.security.presentation.dto.user.CustomUserDetails;
+import com.study.security.application.security.dto.user.CustomUserDetails;
 import com.study.security.application.security.service.LoginService;
 import com.study.security.application.security.util.JwtTokenProvider;
 import io.jsonwebtoken.JwtException;

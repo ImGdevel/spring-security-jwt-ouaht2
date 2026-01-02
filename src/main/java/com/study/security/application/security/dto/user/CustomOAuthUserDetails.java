@@ -1,4 +1,4 @@
-package com.study.security.presentation.dto.user;
+package com.study.security.application.security.dto.user;
 
 import java.util.Collection;
 import java.util.HashMap;

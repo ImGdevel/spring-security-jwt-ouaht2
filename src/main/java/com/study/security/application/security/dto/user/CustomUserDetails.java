@@ -1,4 +1,4 @@
-package com.study.security.presentation.dto.user;
+package com.study.security.application.security.dto.user;
 
 import com.study.security.domain.member.entity.MemberRole;
 import java.util.Collection;
