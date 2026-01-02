@@ -35,7 +35,4 @@ out/
 
 ### VS Code ###
 .vscode/
-
-### Log ###
-logs/info.log
 .DS_Store
