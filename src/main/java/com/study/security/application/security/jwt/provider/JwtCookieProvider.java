@@ -1,5 +1,6 @@
 package com.study.security.application.security.jwt.provider;
 
+import com.study.security.application.security.config.properties.SecurityCookieProperties;
 import com.study.security.application.security.jwt.common.JwtCookieConstants;
 import com.study.security.application.security.jwt.properties.JwtProperties;
 import com.study.security.application.security.common.constants.SecurityConstants;
@@ -17,11 +18,12 @@ import org.springframework.stereotype.Component;
 public class JwtCookieProvider {
 
     private final JwtProperties jwtProperties;
+    private final SecurityCookieProperties securityCookieProperties;
 
     public void addRefreshTokenCookie(HttpServletResponse response, String refreshToken) {
         long maxAgeInSeconds = jwtProperties.getRefreshTokenExpiration() / 1000;
         addCookie(response, JwtCookieConstants.REFRESH_TOKEN_COOKIE_NAME, refreshToken,
-                  SecurityConstants.REFRESH_TOKEN_URL, maxAgeInSeconds);
+                  SecurityConstants.AUTH_COOKIE_PATH, maxAgeInSeconds);
     }
 
     public Optional<String> getRefreshTokenFromCookie(HttpServletRequest request) {
@@ -29,12 +31,12 @@ public class JwtCookieProvider {
     }
 
     public void deleteRefreshTokenCookie(HttpServletResponse response) {
-        deleteCookie(response, JwtCookieConstants.REFRESH_TOKEN_COOKIE_NAME, SecurityConstants.REFRESH_TOKEN_URL);
+        deleteCookie(response, JwtCookieConstants.REFRESH_TOKEN_COOKIE_NAME, SecurityConstants.AUTH_COOKIE_PATH);
     }
 
-    private static void addCookie(HttpServletResponse response, String name, String value, String path, long maxAge) {
+    private void addCookie(HttpServletResponse response, String name, String value, String path, long maxAge) {
         ResponseCookie cookie = ResponseCookie.from(name, value)
-                //.secure(true) todo: https 도입후 활성화 할 것
+                .secure(securityCookieProperties.isSecure())
                 .httpOnly(true)
                 .path(path)
                 .maxAge(maxAge)
@@ -44,7 +46,7 @@ public class JwtCookieProvider {
         response.addHeader(JwtCookieConstants.SET_COOKIE_HEADER, cookie.toString());
     }
 
-    private static Optional<String> getCookie(HttpServletRequest request, String name) {
+    private Optional<String> getCookie(HttpServletRequest request, String name) {
         if (request.getCookies() == null) {
             return Optional.empty();
         }
@@ -54,8 +56,9 @@ public class JwtCookieProvider {
                 .findFirst();
     }
 
-    private static void deleteCookie(HttpServletResponse response, String name, String path) {
+    private void deleteCookie(HttpServletResponse response, String name, String path) {
         ResponseCookie cookie = ResponseCookie.from(name, "")
+                .secure(securityCookieProperties.isSecure())
                 .httpOnly(true)
                 .path(path)
                 .maxAge(0)

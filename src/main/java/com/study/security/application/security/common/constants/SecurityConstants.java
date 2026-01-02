@@ -6,6 +6,7 @@ public class SecurityConstants {
     public static final String LOGOUT_URL = "/auth/logout";
     public static final String SIGNUP_URL = "/auth/signup";
     public static final String REFRESH_TOKEN_URL = "/auth/refresh";
+    public static final String AUTH_COOKIE_PATH = "/auth";
     public static final String OAUTH_URL = "/oauth2/**";
 
     public static final String[] PUBLIC_URLS = {

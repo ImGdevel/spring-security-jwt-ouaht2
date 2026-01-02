@@ -1,16 +1,21 @@
 package com.study.security.application.security.oauth.cookie;
 
+import com.study.security.application.security.config.properties.SecurityCookieProperties;
 import com.study.security.application.security.oauth.common.OAuth2CookieConstants;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.Arrays;
 import java.util.Optional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class OAuth2CookieProvider {
+
+    private final SecurityCookieProperties securityCookieProperties;
 
     public void addOAuth2AuthorizationRequestCookie(HttpServletResponse response, String value) {
         addCookie(
@@ -48,19 +53,19 @@ public class OAuth2CookieProvider {
         deleteCookie(response, OAuth2CookieConstants.REDIRECT_URI_COOKIE_NAME, "/");
     }
 
-    private static void addCookie(HttpServletResponse response, String name, String value, String path, long maxAge) {
+    private void addCookie(HttpServletResponse response, String name, String value, String path, long maxAge) {
         ResponseCookie cookie = ResponseCookie.from(name, value)
-                //.secure(true) todo: https 도입후 활성화 할 것
+                .secure(securityCookieProperties.isSecure())
                 .httpOnly(true)
                 .path(path)
                 .maxAge(maxAge)
-                .sameSite(OAuth2CookieConstants.SAME_SITE_STRICT)
+                .sameSite(securityCookieProperties.getOauth2SameSite())
                 .build();
 
         response.addHeader(OAuth2CookieConstants.SET_COOKIE_HEADER, cookie.toString());
     }
 
-    private static Optional<String> getCookie(HttpServletRequest request, String name) {
+    private Optional<String> getCookie(HttpServletRequest request, String name) {
         if (request.getCookies() == null) {
             return Optional.empty();
         }
@@ -70,15 +75,15 @@ public class OAuth2CookieProvider {
                 .findFirst();
     }
 
-    private static void deleteCookie(HttpServletResponse response, String name, String path) {
+    private void deleteCookie(HttpServletResponse response, String name, String path) {
         ResponseCookie cookie = ResponseCookie.from(name, "")
+                .secure(securityCookieProperties.isSecure())
                 .httpOnly(true)
                 .path(path)
                 .maxAge(0)
-                .sameSite(OAuth2CookieConstants.SAME_SITE_STRICT)
+                .sameSite(securityCookieProperties.getOauth2SameSite())
                 .build();
 
         response.addHeader(OAuth2CookieConstants.SET_COOKIE_HEADER, cookie.toString());
     }
 }
-

@@ -2,6 +2,9 @@ spring:
   application:
     name: security
   security:
+    cookie:
+      secure: false
+      oauth2-same-site: Lax
     cors:
       allowed-origins:
         - http://localhost:3000
