@@ -27,14 +27,14 @@ public class SignupService {
 
         String email = request.email();
         String password = passwordEncoder.encode(request.password());
-        String nickname = request.nickname();
+        String nickname = createDefaultNickname(request.email());
 
         UserAccount account = new UserAccount(
                 null,
                 email,
                 password,
                 nickname,
-                request.profileImage(),
+                null,
                 MemberRole.USER,
                 true
         );
@@ -44,5 +44,13 @@ public class SignupService {
         String accessToken = jwtTokenProvider.generateAccessToken(savedMember.id(), savedMember.role().name());
 
         return new LoginResponse(savedMember.id(), accessToken);
+    }
+
+    private String createDefaultNickname(String email) {
+        int at = email.indexOf('@');
+        if (at <= 0) {
+            return email;
+        }
+        return email.substring(0, at);
     }
 }

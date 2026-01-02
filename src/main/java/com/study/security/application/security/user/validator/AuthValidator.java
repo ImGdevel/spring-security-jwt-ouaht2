@@ -17,9 +17,5 @@ public class AuthValidator {
         if (userRepositoryPort.existsByEmail(request.email())) {
             throw new BusinessException(AuthErrorCode.EMAIL_ALREADY_EXISTS);
         }
-
-        if (userRepositoryPort.existsByNickname(request.nickname())) {
-            throw new BusinessException(AuthErrorCode.NICKNAME_ALREADY_EXISTS);
-        }
     }
 }

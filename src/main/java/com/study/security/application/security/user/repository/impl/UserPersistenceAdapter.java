@@ -41,11 +41,6 @@ public class UserPersistenceAdapter implements UserRepositoryPort {
     }
 
     @Override
-    public boolean existsByNickname(String nickname) {
-        return memberRepository.existsByNickname(nickname);
-    }
-
-    @Override
     public void touchLoginSuccess(Long memberId) {
         memberRepository.findById(memberId).ifPresent(member -> {
             member.loginSuccess();

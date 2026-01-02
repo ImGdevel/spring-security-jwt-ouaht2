@@ -91,12 +91,4 @@ public class AuthController implements AuthApiDocs {
         return ResponseEntity.ok(ApiResponse.success(checkResponse, null));
     }
 
-    @GetMapping("/check-nickname")
-    public ResponseEntity<ApiResponse<CheckAvailabilityResponse>> checkNickname(
-            @RequestParam String nickname
-    ) {
-        boolean available = !memberRepository.existsByNickname(nickname);
-        CheckAvailabilityResponse checkResponse = new CheckAvailabilityResponse(available);
-        return ResponseEntity.ok(ApiResponse.success(checkResponse, null));
-    }
 }

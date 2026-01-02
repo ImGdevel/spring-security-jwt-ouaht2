@@ -76,11 +76,4 @@ public interface AuthApiDocs {
             String email
     );
 
-    @Operation(
-            summary = "닉네임 중복 확인",
-            description = "닉네임 사용 가능 여부를 확인합니다."
-    )
-    ResponseEntity<ApiResponse<CheckAvailabilityResponse>> checkNickname(
-            String nickname
-    );
 }

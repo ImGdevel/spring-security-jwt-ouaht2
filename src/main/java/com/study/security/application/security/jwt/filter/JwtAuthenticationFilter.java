@@ -1,5 +1,6 @@
 package com.study.security.application.security.jwt.filter;
 
+import com.study.security.application.security.common.constants.SecurityConstants;
 import com.study.security.application.security.local.dto.CustomUserDetails;
 import com.study.security.application.security.jwt.provider.JwtTokenProvider;
 import com.study.security.application.security.local.service.LoginService;
@@ -25,10 +26,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtTokenProvider jwtTokenProvider;
-    private final LoginService loginService;
-
-    private static final String AUTHORIZATION_HEADER = "Authorization";
-    private static final String BEARER_PREFIX = "Bearer ";
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
@@ -57,10 +54,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private String extractJwtFromRequest(HttpServletRequest request) {
-        String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
+        String bearerToken = request.getHeader(SecurityConstants.AUTHORIZATION_HEADER);
 
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
-            return bearerToken.substring(BEARER_PREFIX.length());
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(SecurityConstants.BEARER_PREFIX)) {
+            return bearerToken.substring(SecurityConstants.BEARER_PREFIX.length());
         }
 
         return null;

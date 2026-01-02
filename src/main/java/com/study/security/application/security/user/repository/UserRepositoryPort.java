@@ -13,7 +13,5 @@ public interface UserRepositoryPort {
 
     boolean existsByEmail(String email);
 
-    boolean existsByNickname(String nickname);
-
     void touchLoginSuccess(Long memberId);
 }

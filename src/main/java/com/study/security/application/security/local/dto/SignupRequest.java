@@ -19,12 +19,5 @@ public record SignupRequest(
         @Schema(description = "사용자 비밀번호", example = "password1234")
         @NotBlank(message = REQUIRED_FIELD)
         @Size(min = 8, max = 72, message = "비밀번호는 8자 이상이어야 합니다.")
-        String password,
-
-        @Schema(description = "닉네임", example = "devon")
-        @NotBlank(message = REQUIRED_FIELD)
-        String nickname,
-
-        @Schema(description = "프로필 이미지 URL", example = "https://example.com/avatar.png")
-        String profileImage
+        String password
 ) {}

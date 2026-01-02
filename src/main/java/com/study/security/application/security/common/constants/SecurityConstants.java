@@ -8,6 +8,8 @@ public class SecurityConstants {
     public static final String REFRESH_TOKEN_URL = "/auth/refresh";
     public static final String AUTH_COOKIE_PATH = "/auth";
     public static final String OAUTH_URL = "/oauth2/**";
+    public static final String AUTHORIZATION_HEADER = "Authorization";
+    public static final String BEARER_PREFIX = "Bearer ";
 
     public static final String[] PUBLIC_URLS = {
             "/", "/**",
