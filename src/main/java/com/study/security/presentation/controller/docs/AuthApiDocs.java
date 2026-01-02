@@ -1,5 +1,6 @@
 package com.study.security.presentation.controller.docs;
 
+import com.study.security.application.security.annotation.RefreshToken;
 import com.study.security.application.security.local.dto.SignupRequest;
 import com.study.security.presentation.dto.request.LoginRequest;
 import com.study.security.presentation.dto.response.CheckAvailabilityResponse;
@@ -35,7 +36,7 @@ public interface AuthApiDocs {
             description = "리프레시 토큰을 사용하여 새로운 액세스 토큰을 발급받습니다."
     )
     ResponseEntity<ApiResponse<RefreshTokenResponse>> refreshToken(
-            HttpServletRequest request
+            @RefreshToken String refreshToken
     );
 
     @Operation(
@@ -83,4 +84,3 @@ public interface AuthApiDocs {
             String nickname
     );
 }
-

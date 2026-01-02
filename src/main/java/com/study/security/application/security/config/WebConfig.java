@@ -1,6 +1,7 @@
 package com.study.security.application.security.config;
 
 import com.study.security.application.security.resolver.CurrentUserArgumentResolver;
+import com.study.security.application.security.resolver.RefreshTokenArgumentResolver;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
@@ -12,9 +13,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebConfig implements WebMvcConfigurer {
 
     private final CurrentUserArgumentResolver currentUserArgumentResolver;
+    private final RefreshTokenArgumentResolver refreshTokenArgumentResolver;
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
         resolvers.add(currentUserArgumentResolver);
+        resolvers.add(refreshTokenArgumentResolver);
     }
 }
