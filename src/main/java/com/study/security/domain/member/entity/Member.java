@@ -39,8 +39,9 @@ public class Member {
     @Column(nullable = false)
     private MemberRole role;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private boolean active;
+    private MemberStatus status;
 
     @Column(nullable = false)
     private Instant createdAt;
@@ -51,13 +52,13 @@ public class Member {
     private Instant lastLoginAt;
 
     private Member(String email, String password, String nickname, String profileImage,
-                   MemberRole role, boolean active, Instant createdAt, Instant updatedAt, Instant lastLoginAt) {
+                   MemberRole role, MemberStatus status, Instant createdAt, Instant updatedAt, Instant lastLoginAt) {
         this.email = email;
         this.password = password;
         this.nickname = nickname;
         this.profileImage = profileImage;
         this.role = role;
-        this.active = active;
+        this.status = status;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.lastLoginAt = lastLoginAt;
@@ -66,7 +67,7 @@ public class Member {
     public static Member create(String email, String password, String nickname) {
         Instant now = Instant.now();
         return new Member(email, password, nickname, null,
-                MemberRole.USER, true, now, now, null);
+                MemberRole.USER, MemberStatus.ACTIVE, now, now, null);
     }
 
     public void updateProfileImage(String profileImage) {
@@ -83,6 +84,6 @@ public class Member {
     }
 
     public boolean isActive() {
-        return active;
+        return status == MemberStatus.ACTIVE;
     }
 }
