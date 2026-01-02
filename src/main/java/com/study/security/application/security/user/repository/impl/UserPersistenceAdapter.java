@@ -28,8 +28,8 @@ public class UserPersistenceAdapter implements UserRepositoryPort {
     @Override
     public UserAccount save(UserAccount account) {
         Member member = Member.create(account.email(), account.password(), account.nickname());
-        if (StringUtils.hasText(account.profileImage())) {
-            member.updateProfileImage(account.profileImage());
+        if (StringUtils.hasText(account.profileImageUrl())) {
+            member.updateProfileImageUrl(account.profileImageUrl());
         }
         memberRepository.save(member);
         return UserAccount.from(member);
@@ -43,7 +43,7 @@ public class UserPersistenceAdapter implements UserRepositoryPort {
     @Override
     public void touchLoginSuccess(Long memberId) {
         memberRepository.findById(memberId).ifPresent(member -> {
-            member.loginSuccess();
+            member.recordLoginSuccess();
             memberRepository.save(member);
         });
     }

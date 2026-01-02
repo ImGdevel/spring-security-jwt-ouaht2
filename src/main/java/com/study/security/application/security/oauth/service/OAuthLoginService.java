@@ -38,7 +38,7 @@ public class OAuthLoginService extends DefaultOAuth2UserService {
                 .orElseGet(() -> registerUser(userInfo));
 
         Member member = oAuthMember.getMember();
-        member.loginSuccess();
+        member.recordLoginSuccess();
 
         return new CustomOAuthUserDetails(member.getId(), member.getRole().name());
     }

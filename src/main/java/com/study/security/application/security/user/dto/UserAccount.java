@@ -11,6 +11,7 @@ import com.study.security.domain.member.entity.MemberRole;
  * @param email 이메일
  * @param password 암호화된 비밀번호
  * @param nickname 닉네임
+ * @param profileImageUrl 프로필 이미지 URL
  * @param role 회원 역할(enum)
  * @param active 활성화 여부
  */
@@ -19,7 +20,7 @@ public record UserAccount(
         String email,
         String password,
         String nickname,
-        String profileImage,
+        String profileImageUrl,
         MemberRole role,
         boolean active
 ) {
@@ -30,7 +31,7 @@ public record UserAccount(
                 member.getEmail(),
                 member.getPassword(),
                 member.getNickname(),
-                member.getProfileImage(),
+                member.getProfileImageUrl(),
                 member.getRole(),
                 member.isActive()
         );

@@ -10,12 +10,16 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.time.Instant;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "member")
 @Getter
+@Builder(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member {
 
@@ -23,67 +27,118 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true, length = 255)
+    @Column(name = "email", unique = true, nullable = false, length = 255)
     private String email;
 
-    @Column(nullable = false)
+    @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(nullable = false, unique = true, length = 64)
+    @Column(name = "nickname", length = 50, nullable = false)
     private String nickname;
 
-    @Column(length = 512)
-    private String profileImage;
+    @Column(name = "profile_image_url", length = 500)
+    private String profileImageUrl;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private MemberRole role;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(name = "status", nullable = false)
     private MemberStatus status;
 
-    @Column(nullable = false)
-    private Instant createdAt;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role", nullable = false)
+    private MemberRole role;
 
-    @Column(nullable = false)
-    private Instant updatedAt;
-
+    @Column(name = "last_login_at")
     private Instant lastLoginAt;
 
-    private Member(String email, String password, String nickname, String profileImage,
-                   MemberRole role, MemberStatus status, Instant createdAt, Instant updatedAt, Instant lastLoginAt) {
-        this.email = email;
-        this.password = password;
-        this.nickname = nickname;
-        this.profileImage = profileImage;
-        this.role = role;
-        this.status = status;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-        this.lastLoginAt = lastLoginAt;
-    }
+    @Column(name = "agreed_terms_at")
+    private Instant agreedTermsAt;
+
+    @Column(name = "agreed_privacy_at")
+    private Instant agreedPrivacyAt;
+
+    @Column(name = "created_at", nullable = false)
+    private Instant createdAt;
+
+    @Column(name = "updated_at", nullable = false)
+    private Instant updatedAt;
 
     public static Member create(String email, String password, String nickname) {
+        validateCreate(email, password, nickname);
         Instant now = Instant.now();
-        return new Member(email, password, nickname, null,
-                MemberRole.USER, MemberStatus.ACTIVE, now, now, null);
+        return Member.builder()
+                .email(email)
+                .password(password)
+                .nickname(nickname)
+                .status(MemberStatus.ACTIVE)
+                .role(MemberRole.USER)
+                .createdAt(now)
+                .updatedAt(now)
+                .build();
     }
 
-    public void updateProfileImage(String profileImage) {
-        if (profileImage == null || profileImage.isBlank()) {
-            return;
+    public void changeNickname(String nickname) {
+        validateNickname(nickname);
+        this.nickname = nickname;
+        touchUpdated();
+    }
+
+    public void updateProfileImageUrl(String profileImageUrl) {
+        if (profileImageUrl != null && profileImageUrl.length() > 500) {
+            throw new IllegalArgumentException("profileImageUrl too long");
         }
-        this.profileImage = profileImage;
-        this.updatedAt = Instant.now();
+        this.profileImageUrl = profileImageUrl;
+        touchUpdated();
     }
 
-    public void loginSuccess() {
+    public void recordLoginSuccess() {
         this.lastLoginAt = Instant.now();
-        this.updatedAt = Instant.now();
+        touchUpdated();
+    }
+
+    public void markTermsAgreed(Instant when) {
+        this.agreedTermsAt = when;
+        touchUpdated();
+    }
+
+    public void markPrivacyAgreed(Instant when) {
+        this.agreedPrivacyAt = when;
+        touchUpdated();
+    }
+
+    public void block() {
+        this.status = MemberStatus.BLOCKED;
+        touchUpdated();
+    }
+
+    public void withdraw() {
+        this.status = MemberStatus.DELETED;
+        touchUpdated();
     }
 
     public boolean isActive() {
         return status == MemberStatus.ACTIVE;
+    }
+
+    private void touchUpdated() {
+        this.updatedAt = Instant.now();
+    }
+
+    private static void validateCreate(String email, String password, String nickname) {
+        if (email == null || email.isBlank()) {
+            throw new IllegalArgumentException("email required");
+        }
+        if (password == null || password.isBlank()) {
+            throw new IllegalArgumentException("password required");
+        }
+        validateNickname(nickname);
+    }
+
+    private static void validateNickname(String nickname) {
+        if (nickname == null || nickname.isBlank()) {
+            throw new IllegalArgumentException("nickname required");
+        }
+        if (nickname.length() > 50) {
+            throw new IllegalArgumentException("nickname too long");
+        }
     }
 }
