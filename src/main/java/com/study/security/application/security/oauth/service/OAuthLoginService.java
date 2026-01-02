@@ -1,5 +1,6 @@
 package com.study.security.application.security.oauth.service;
 
+import com.study.security.application.security.common.util.NicknameGenerator;
 import com.study.security.application.security.oauth.provider.OAuthUserInfo;
 import com.study.security.application.security.oauth.provider.OAuthUserInfoFactory;
 import com.study.security.application.security.oauth.dto.CustomOAuthUserDetails;
@@ -44,7 +45,7 @@ public class OAuthLoginService extends DefaultOAuth2UserService {
 
     private OAuthMember registerUser(OAuthUserInfo userInfo) {
         String email = userInfo.getEmail();
-        String name = userInfo.getName().substring(0,5);  // todo: 추후 닉네임 자동 생성기로 변경
+        String name = NicknameGenerator.fromName(userInfo.getName());
         String randomPassword = passwordEncoder.encode("password");
 
         Member member = Member.create(email, randomPassword, name);

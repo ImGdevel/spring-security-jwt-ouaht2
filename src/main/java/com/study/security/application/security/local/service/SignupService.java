@@ -1,11 +1,13 @@
 package com.study.security.application.security.local.service;
 
+import com.study.security.application.security.common.util.NicknameGenerator;
 import com.study.security.application.security.user.dto.UserAccount;
 import com.study.security.application.security.user.repository.UserRepositoryPort;
 import com.study.security.application.security.local.dto.SignupRequest;
-import com.study.security.application.security.user.validator.AuthValidator;
 import com.study.security.application.security.local.dto.LoginResponse;
 import com.study.security.application.security.jwt.provider.JwtTokenProvider;
+import com.study.security.common.exception.BusinessException;
+import com.study.security.common.exception.code.AuthErrorCode;
 import com.study.security.domain.member.entity.MemberRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,17 +19,18 @@ import org.springframework.transaction.annotation.Transactional;
 public class SignupService {
 
     private final UserRepositoryPort userRepositoryPort;
-    private final AuthValidator authValidator;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
 
     @Transactional
     public LoginResponse signup(SignupRequest request) {
-        authValidator.validateSignup(request);
+        if (userRepositoryPort.existsByEmail(request.email())) {
+            throw new BusinessException(AuthErrorCode.EMAIL_ALREADY_EXISTS);
+        }
 
         String email = request.email();
         String password = passwordEncoder.encode(request.password());
-        String nickname = createDefaultNickname(request.email());
+        String nickname = NicknameGenerator.fromEmail(email);
 
         UserAccount account = new UserAccount(
                 null,
@@ -46,11 +49,4 @@ public class SignupService {
         return new LoginResponse(savedMember.id(), accessToken);
     }
 
-    private String createDefaultNickname(String email) {
-        int at = email.indexOf('@');
-        if (at <= 0) {
-            return email;
-        }
-        return email.substring(0, at);
-    }
 }
