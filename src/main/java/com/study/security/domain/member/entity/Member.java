@@ -1,5 +1,6 @@
 package com.study.security.domain.member.entity;
 
+import com.study.security.domain.common.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -21,7 +22,7 @@ import lombok.NoArgsConstructor;
 @Builder(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Member {
+public class Member extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -56,23 +57,14 @@ public class Member {
     @Column(name = "agreed_privacy_at")
     private Instant agreedPrivacyAt;
 
-    @Column(name = "created_at", nullable = false)
-    private Instant createdAt;
-
-    @Column(name = "updated_at", nullable = false)
-    private Instant updatedAt;
-
     public static Member create(String email, String password, String nickname) {
         validateCreate(email, password, nickname);
-        Instant now = Instant.now();
         return Member.builder()
                 .email(email)
                 .password(password)
                 .nickname(nickname)
                 .status(MemberStatus.ACTIVE)
                 .role(MemberRole.USER)
-                .createdAt(now)
-                .updatedAt(now)
                 .build();
     }
 
@@ -117,10 +109,6 @@ public class Member {
 
     public boolean isActive() {
         return status == MemberStatus.ACTIVE;
-    }
-
-    private void touchUpdated() {
-        this.updatedAt = Instant.now();
     }
 
     private static void validateCreate(String email, String password, String nickname) {
