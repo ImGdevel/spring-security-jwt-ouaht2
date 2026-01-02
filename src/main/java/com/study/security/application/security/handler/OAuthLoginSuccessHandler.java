@@ -3,7 +3,7 @@ package com.study.security.application.security.handler;
 import com.study.security.application.security.dto.user.CustomOAuthUserDetails;
 import com.study.security.application.security.repository.HttpCookieOAuth2AuthorizationRequestRepository;
 import com.study.security.application.security.util.CookieProvider;
-import com.study.security.application.security.util.JwtTokenProvider;
+import com.study.security.application.security.jwt.JwtTokenProvider;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;

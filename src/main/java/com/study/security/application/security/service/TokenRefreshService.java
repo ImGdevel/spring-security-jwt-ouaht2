@@ -1,7 +1,7 @@
 package com.study.security.application.security.service;
 
 import com.study.security.application.member.MemberPort;
-import com.study.security.application.security.util.JwtTokenProvider;
+import com.study.security.application.security.jwt.JwtTokenProvider;
 import com.study.security.common.exception.BusinessException;
 import com.study.security.common.exception.code.AuthErrorCode;
 import com.study.security.common.exception.code.MemberErrorCode;

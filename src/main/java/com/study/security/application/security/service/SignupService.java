@@ -5,7 +5,7 @@ import com.study.security.application.member.MemberPort;
 import com.study.security.application.member.dto.request.SignupRequest;
 import com.study.security.application.member.validator.AuthValidator;
 import com.study.security.presentation.dto.response.LoginResponse;
-import com.study.security.application.security.util.JwtTokenProvider;
+import com.study.security.application.security.jwt.JwtTokenProvider;
 import com.study.security.domain.member.entity.MemberRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;

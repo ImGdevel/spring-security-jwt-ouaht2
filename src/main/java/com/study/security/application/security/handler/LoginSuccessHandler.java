@@ -3,7 +3,7 @@ package com.study.security.application.security.handler;
 import com.study.security.presentation.dto.response.LoginResponse;
 import com.study.security.application.security.dto.user.CustomUserDetails;
 import com.study.security.application.security.util.CookieProvider;
-import com.study.security.application.security.util.JwtTokenProvider;
+import com.study.security.application.security.jwt.JwtTokenProvider;
 import com.study.security.application.security.util.SecurityResponseSender;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

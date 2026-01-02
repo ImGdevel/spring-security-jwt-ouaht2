@@ -1,4 +1,4 @@
-package com.study.security.application.security.util;
+package com.study.security.application.security.jwt;
 
 import com.study.security.application.security.config.properties.JwtProperties;
 import com.study.security.application.security.constants.JwtConstants;
@@ -83,7 +83,6 @@ public class JwtTokenProvider {
         return expiration.getTime() - System.currentTimeMillis();
     }
 
-
     public boolean isAccessToken(String token) {
         return JwtConstants.TOKEN_TYPE_ACCESS.equals(getTokenType(token));
     }
@@ -100,6 +99,4 @@ public class JwtTokenProvider {
             return true;
         }
     }
-
-
 }

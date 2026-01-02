@@ -4,7 +4,7 @@ import com.study.security.application.security.constants.SecurityConstants;
 import com.study.security.application.security.filter.CustomLoginAuthenticationFilter;
 import com.study.security.application.security.filter.CustomLogoutFilter;
 import com.study.security.application.security.filter.FilterChainExceptionFilter;
-import com.study.security.application.security.filter.JwtAuthenticationFilter;
+import com.study.security.application.security.jwt.JwtAuthenticationFilter;
 import com.study.security.application.security.handler.CustomAccessDeniedHandler;
 import com.study.security.application.security.handler.CustomAuthenticationEntryPoint;
 import com.study.security.application.security.handler.LoginFailureHandler;

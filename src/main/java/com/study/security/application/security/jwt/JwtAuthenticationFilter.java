@@ -1,8 +1,7 @@
-package com.study.security.application.security.filter;
+package com.study.security.application.security.jwt;
 
 import com.study.security.application.security.dto.user.CustomUserDetails;
 import com.study.security.application.security.service.LoginService;
-import com.study.security.application.security.util.JwtTokenProvider;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

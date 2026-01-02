@@ -1,6 +1,6 @@
 package com.study.security.application.security.service;
 
-import com.study.security.application.security.util.JwtTokenProvider;
+import com.study.security.application.security.jwt.JwtTokenProvider;
 import com.study.security.infra.redis.adapter.RedisService;
 import java.time.Duration;
 import lombok.RequiredArgsConstructor;
