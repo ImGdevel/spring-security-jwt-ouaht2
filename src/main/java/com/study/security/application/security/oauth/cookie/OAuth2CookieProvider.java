@@ -17,6 +17,9 @@ public class OAuth2CookieProvider {
 
     private final SecurityCookieProperties securityCookieProperties;
 
+    /**
+     * OAuth2 인증 요청 정보를 직렬화해서 쿠키로 저장합니다.
+     */
     public void addOAuth2AuthorizationRequestCookie(HttpServletResponse response, String value) {
         addCookie(
                 response,
@@ -27,14 +30,23 @@ public class OAuth2CookieProvider {
         );
     }
 
+    /**
+     * 쿠키에서 OAuth2 인증 요청 데이터를 복원합니다.
+     */
     public Optional<String> getOAuth2AuthorizationRequestCookie(HttpServletRequest request) {
         return getCookie(request, OAuth2CookieConstants.OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME);
     }
 
+    /**
+     * OAuth2 인증 요청 쿠키를 무효화합니다.
+     */
     public void deleteOAuth2AuthorizationRequestCookie(HttpServletResponse response) {
         deleteCookie(response, OAuth2CookieConstants.OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME, "/");
     }
 
+    /**
+     * OAuth2 인증 중 리다이렉트할 URI를 쿠키에 저장합니다.
+     */
     public void addRedirectUriCookie(HttpServletResponse response, String redirectUri) {
         addCookie(
                 response,
@@ -45,13 +57,21 @@ public class OAuth2CookieProvider {
         );
     }
 
+    /**
+     * 저장된 OAuth2 리다이렉트 URI를 조회합니다.
+     */
     public Optional<String> getRedirectUriCookie(HttpServletRequest request) {
         return getCookie(request, OAuth2CookieConstants.REDIRECT_URI_COOKIE_NAME);
     }
 
+    /**
+     * OAuth2 리다이렉트 URI 쿠키를 삭제합니다.
+     */
     public void deleteRedirectUriCookie(HttpServletResponse response) {
         deleteCookie(response, OAuth2CookieConstants.REDIRECT_URI_COOKIE_NAME, "/");
     }
+
+    //////////////////////////////////////////////////////////////////////////////
 
     private void addCookie(HttpServletResponse response, String name, String value, String path, long maxAge) {
         ResponseCookie cookie = ResponseCookie.from(name, value)

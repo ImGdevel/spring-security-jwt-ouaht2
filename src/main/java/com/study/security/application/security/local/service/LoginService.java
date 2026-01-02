@@ -31,8 +31,7 @@ public class LoginService implements UserDetailsService {
         return new CustomUserDetails(
                 member.id(),
                 member.password(),
-                member.role(),
-                member.active()
+                member.role()
         );
     }
 }
