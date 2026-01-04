@@ -12,7 +12,7 @@ public class SecurityConstants {
     public static final String BEARER_PREFIX = "Bearer ";
 
     public static final String[] PUBLIC_URLS = {
-            "/", "/**",
+            "/",
             LOGIN_URL, LOGOUT_URL, SIGNUP_URL, REFRESH_TOKEN_URL,
             OAUTH_URL, "/api/*",
             "/v3/api-docs/**", "/swagger-ui/**", "/swagger-resources/**", "/actuator/**"
