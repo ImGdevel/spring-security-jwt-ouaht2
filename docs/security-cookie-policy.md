@@ -20,3 +20,11 @@ OAuth2 로그인은 일반적으로 다음 흐름을 탑니다.
 - `spring.security.cookie.oauth2-same-site`
   - 기본값 `Lax`
   - `None`을 사용할 경우 브라우저 정책상 `Secure`가 필수이므로 `spring.security.cookie.secure=true`가 필요합니다.
+
+## OAuth2 프로바이더 설정
+
+- OAuth2 프로바이더 등록 정보는 기본 `application.yaml`에 넣지 않고, 프로필 파일 `src/main/resources/application-oauth2.yaml`에서 관리합니다.
+- 활성화: `spring.profiles.active=oauth2`
+- 필요한 환경 변수:
+  - `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`
+  - `GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET`
