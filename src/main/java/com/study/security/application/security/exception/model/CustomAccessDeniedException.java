@@ -3,6 +3,9 @@ package com.study.security.application.security.exception.model;
 import com.study.security.common.exception.ErrorCode;
 import org.springframework.security.access.AccessDeniedException;
 
+/**
+ * 커스텀 인가 접근 거부 예외 (403 Forbidden)
+ */
 public class CustomAccessDeniedException extends AccessDeniedException {
 
     private final ErrorCode errorCode;

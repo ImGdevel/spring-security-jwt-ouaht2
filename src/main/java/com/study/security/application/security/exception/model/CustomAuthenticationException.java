@@ -3,6 +3,9 @@ package com.study.security.application.security.exception.model;
 import com.study.security.common.exception.ErrorCode;
 import org.springframework.security.core.AuthenticationException;
 
+/**
+ * 커스텀 인증 예외 (401 Unauthorized)
+ */
 public class CustomAuthenticationException extends AuthenticationException {
 
     private final ErrorCode errorCode;
