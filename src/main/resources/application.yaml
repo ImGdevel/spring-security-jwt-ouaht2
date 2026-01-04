@@ -1,4 +1,6 @@
 spring:
+  config:
+    import: "optional:classpath:application-oauth2.yaml"
   application:
     name: security
   security:
