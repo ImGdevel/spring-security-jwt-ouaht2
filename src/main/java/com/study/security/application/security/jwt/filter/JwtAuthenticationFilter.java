@@ -20,6 +20,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+/**
+ * JWT 인증 필터 
+ */
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -27,6 +30,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtTokenProvider jwtTokenProvider;
 
+    /** 
+     * 요청에서 JWT를 추출하고 유효성을 검사한 후, 인증 정보를 SecurityContext에 설정합니다.
+     */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
@@ -53,6 +59,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
+    /**
+     * 요청에서 JWT 토큰을 추출합니다.
+     */
     private String extractJwtFromRequest(HttpServletRequest request) {
         String bearerToken = request.getHeader(SecurityConstants.AUTHORIZATION_HEADER);
 

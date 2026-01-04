@@ -12,7 +12,9 @@ import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequ
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-
+/**
+ * OAuth2 인증 요청을 HTTP 쿠키에 저장하고 복원하는 리포지토리
+ */
 @Component
 @RequiredArgsConstructor
 public class HttpCookieOAuth2AuthorizationRequestRepository implements AuthorizationRequestRepository<OAuth2AuthorizationRequest> {
@@ -20,6 +22,7 @@ public class HttpCookieOAuth2AuthorizationRequestRepository implements Authoriza
     private final RedirectUriValidator redirectUriValidator;
     private final OAuth2CookieProvider oAuth2CookieProvider;
 
+    /** OAuth2 인증 요청을 쿠키에서 로드합니다. */
     @Override
     public OAuth2AuthorizationRequest loadAuthorizationRequest(HttpServletRequest request) {
         return oAuth2CookieProvider.getOAuth2AuthorizationRequestCookie(request)
@@ -27,6 +30,7 @@ public class HttpCookieOAuth2AuthorizationRequestRepository implements Authoriza
                 .orElse(null);
     }
 
+    /** OAuth2 인증 요청을 쿠키에 저장합니다. */
     @Override
     public void saveAuthorizationRequest(OAuth2AuthorizationRequest authorizationRequest, HttpServletRequest request, HttpServletResponse response) {
         if (authorizationRequest == null) {
@@ -41,6 +45,7 @@ public class HttpCookieOAuth2AuthorizationRequestRepository implements Authoriza
         }
     }
 
+    /** OAuth2 인증 요청을 쿠키에서 제거합니다. */
     @Override
     public OAuth2AuthorizationRequest removeAuthorizationRequest(HttpServletRequest request, HttpServletResponse response) {
         return loadAuthorizationRequest(request);

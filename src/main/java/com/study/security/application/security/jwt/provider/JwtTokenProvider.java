@@ -11,6 +11,9 @@ import javax.crypto.SecretKey;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+/**
+ * JWT 토큰 제공자
+ */
 @Slf4j
 @Component
 public class JwtTokenProvider {
@@ -20,7 +23,7 @@ public class JwtTokenProvider {
 
     public JwtTokenProvider(JwtProperties properties){
         this.jwtProperties = properties;
-        this.secretKey = Keys.hmacShaKeyFor(properties.getSecret().getBytes(StandardCharsets.UTF_8));
+        this.secretKey = Keys.hmacShaKeyFor(properties.getSecret().getBytes(StandardCharsets.UTF_8)); // HS256 비밀 키 생성
     }
 
     public String generateAccessToken(Long memberId, String role) {

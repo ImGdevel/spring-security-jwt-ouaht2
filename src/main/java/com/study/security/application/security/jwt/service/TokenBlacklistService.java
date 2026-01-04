@@ -7,6 +7,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+/**
+ * 토큰 블랙리스트 서비스
+ */
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -15,6 +18,11 @@ public class TokenBlacklistService {
     private final TokenBlacklistStore blacklistStore;
     private final JwtTokenProvider jwtTokenProvider;
 
+    /**
+     * 토큰을 블랙리스트에 추가합니다.
+     *
+     * @param token 블랙리스트에 추가할 토큰
+     */
     public void addToBlacklist(String token) {
         try {
             long ttl = jwtTokenProvider.getExpiresIn(token);

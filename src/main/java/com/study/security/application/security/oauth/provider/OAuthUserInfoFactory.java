@@ -2,6 +2,9 @@ package com.study.security.application.security.oauth.provider;
 
 import java.util.Map;
 
+/**
+ * OAuth 사용자 정보 팩토리
+ */
 public class OAuthUserInfoFactory {
     public static OAuthUserInfo getOAuth2UserInfo(String registrationId, Map<String, Object> attributes) {
         return switch (registrationId.toLowerCase()) {

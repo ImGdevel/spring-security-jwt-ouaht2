@@ -13,6 +13,9 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
+/**
+ * 리프레시 토큰을 컨트롤러 메서드 인자로 주입하는 Argument Resolver
+ */
 @Component
 @RequiredArgsConstructor
 public class RefreshTokenArgumentResolver implements HandlerMethodArgumentResolver {
@@ -25,6 +28,9 @@ public class RefreshTokenArgumentResolver implements HandlerMethodArgumentResolv
                 && parameter.getParameterType().equals(String.class);
     }
 
+    /** 
+     * 요청에서 리프레시 토큰을 추출하여 반환
+     */
     @Override
     public Object resolveArgument(
             MethodParameter parameter,

@@ -7,6 +7,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.apache.commons.codec.digest.DigestUtils;
 
+/**
+ * Redis를 이용한 토큰 블랙리스트 저장소 구현체
+ */
 @Component
 @RequiredArgsConstructor
 public class RedisTokenBlacklistStore implements TokenBlacklistStore {

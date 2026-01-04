@@ -12,7 +12,11 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
-@Slf4j@Component
+/**
+ * 현재 인증된 사용자의 UID를 컨트롤러 메서드 인자로 주입하는 Argument Resolver
+ */ 
+@Slf4j
+@Component
 public class CurrentUserArgumentResolver implements HandlerMethodArgumentResolver {
 
     @Override
@@ -20,6 +24,9 @@ public class CurrentUserArgumentResolver implements HandlerMethodArgumentResolve
         return parameter.hasParameterAnnotation(CurrentUser.class) && parameter.getParameterType().equals(Long.class);
     }
 
+    /** 
+     * 현재 인증된 사용자의 UID를 반환
+     */
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
                                   NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {

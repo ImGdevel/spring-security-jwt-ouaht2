@@ -11,6 +11,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Component;
 
+/**
+ * OAuth2 인증 요청 쿠키 관리 제공자
+ */
 @Component
 @RequiredArgsConstructor
 public class OAuth2CookieProvider {

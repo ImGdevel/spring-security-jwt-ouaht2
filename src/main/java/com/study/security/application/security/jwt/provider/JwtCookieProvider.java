@@ -13,6 +13,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Component;
 
+/**
+ * JWT 리프레시 토큰 쿠키 관리 제공자
+ */
 @Component
 @RequiredArgsConstructor
 public class JwtCookieProvider {

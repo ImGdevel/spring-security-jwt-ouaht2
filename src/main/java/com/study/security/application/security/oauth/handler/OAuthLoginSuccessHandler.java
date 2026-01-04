@@ -14,7 +14,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
-@Slf4j
+/**
+ * OAuth2 로그인 성공 핸들러
+ */
 @Component
 @RequiredArgsConstructor
 public class OAuthLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
@@ -38,8 +40,6 @@ public class OAuthLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHand
         authorizationRequestRepository.removeAuthorizationRequestCookies(response);
 
         getRedirectStrategy().sendRedirect(request, response, redirectUri);
-
-        log.info("OAuth2 로그인 성공 : id - {} / redirect url- {}", memberId, redirectUri);
     }
 
     private String determineTargetUrl(HttpServletRequest request) {
