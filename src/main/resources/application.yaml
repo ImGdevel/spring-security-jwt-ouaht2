@@ -2,6 +2,8 @@ spring:
   application:
     name: security
   security:
+    features:
+      jwt: true
     cookie:
       secure: false
       oauth2-same-site: Lax
