@@ -45,6 +45,7 @@ Spring Security 기반 인증/인가를 “구성(config) + 필터(filter) + 핸
     - `service/TokenBlacklistService`: refresh token 블랙리스트 등록/조회(키 구성 포함).
     - `service/TokenRefreshService`: refresh token 검증 + 블랙리스트 확인 후 access token 재발급.
   - `local/` (이메일/비밀번호 로그인)
+    - `config/LocalSecurityConfig`: 로컬 로그인/로그아웃 필터 등록(로그인 필터 생성 포함).
     - `dto/CustomUserDetails`, `SignupRequest`, `LoginResponse`: 인증 principal 및 요청/응답 DTO.
     - `filter/CustomLoginAuthenticationFilter`: `/auth/login` JSON 본문 파싱 후 `AuthenticationManager`에 인증 위임.
     - `filter/CustomLogoutFilter`: `/auth/logout` POST 요청을 가로채 `LogoutHandler`로 위임.

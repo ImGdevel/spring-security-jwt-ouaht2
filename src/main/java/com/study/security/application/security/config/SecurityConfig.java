@@ -2,19 +2,14 @@ package com.study.security.application.security.config;
 
 import com.study.security.application.security.common.constants.SecurityConstants;
 import com.study.security.application.security.jwt.config.JwtSecurityConfig;
-import com.study.security.application.security.local.filter.CustomLoginAuthenticationFilter;
-import com.study.security.application.security.local.filter.CustomLogoutFilter;
 import com.study.security.application.security.exception.filter.FilterChainExceptionFilter;
 import com.study.security.application.security.exception.handler.CustomAccessDeniedHandler;
 import com.study.security.application.security.exception.handler.CustomAuthenticationEntryPoint;
-import com.study.security.application.security.local.handler.LoginFailureHandler;
-import com.study.security.application.security.local.handler.LoginSuccessHandler;
+import com.study.security.application.security.local.config.LocalSecurityConfig;
 import com.study.security.application.security.oauth.config.OAuth2SecurityConfig;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -29,21 +24,13 @@ import org.springframework.web.cors.CorsConfigurationSource;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final AuthenticationConfiguration authenticationConfiguration;
-    private final LoginSuccessHandler loginSuccessHandler;
-    private final LoginFailureHandler loginFailureHandler;
     private final CorsConfigurationSource corsConfigurationSource;
     private final CustomAuthenticationEntryPoint authenticationEntryPoint;
     private final CustomAccessDeniedHandler accessDeniedHandler;
     private final FilterChainExceptionFilter filterChainExceptionFilter;
-    private final CustomLogoutFilter customLogoutFilter;
+    private final LocalSecurityConfig localSecurityConfig;
     private final JwtSecurityConfig jwtSecurityConfig;
     private final OAuth2SecurityConfig oAuth2SecurityConfig;
-
-    @Bean
-    public AuthenticationManager authenticationManager() throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
-    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -74,18 +61,6 @@ public class SecurityConfig {
 
                 .formLogin(AbstractHttpConfigurer::disable)
 
-                /// -> 커스텀 일반 로그인 필터]
-                .addFilterAt(
-                        createLoginAuthenticationFilter(authenticationManager()),
-                        UsernamePasswordAuthenticationFilter.class
-                )
-
-                /// [커스텀 로그아웃 필터]
-                .addFilterBefore(
-                        customLogoutFilter,
-                        UsernamePasswordAuthenticationFilter.class
-                )
-
                 /// [필터 체인 전역 예외 헨들러] : 모든 예외
                 .addFilterBefore(
                         filterChainExceptionFilter,
@@ -100,16 +75,10 @@ public class SecurityConfig {
 
         ;
 
+        localSecurityConfig.configure(http);
         jwtSecurityConfig.configure(http);
         oAuth2SecurityConfig.configure(http);
 
         return http.build();
-    }
-
-    private CustomLoginAuthenticationFilter createLoginAuthenticationFilter(AuthenticationManager authenticationManager) {
-        CustomLoginAuthenticationFilter filter = new CustomLoginAuthenticationFilter(
-                authenticationManager, loginSuccessHandler, loginFailureHandler);
-        filter.setFilterProcessesUrl(SecurityConstants.LOGIN_URL);
-        return filter;
     }
 }
