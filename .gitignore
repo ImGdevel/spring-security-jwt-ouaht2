@@ -36,3 +36,8 @@ out/
 ### VS Code ###
 .vscode/
 .DS_Store
+
+# env files
+.env
+.env.*
+!.env.example
