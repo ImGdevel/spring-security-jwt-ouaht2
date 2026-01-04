@@ -6,6 +6,9 @@ import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+/**
+ * 리다이렉트 URI의 유효성을 검증하는 유틸리티 클래스
+ */
 @Slf4j
 @Component
 public class RedirectUriValidator {

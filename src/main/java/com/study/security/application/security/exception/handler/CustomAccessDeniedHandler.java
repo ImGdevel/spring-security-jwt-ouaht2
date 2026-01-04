@@ -7,12 +7,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;
 
-@Slf4j
+/**
+ * 커스텀 인가 접근 거부 핸들러 (403 Forbidden)
+ */
 @Component
 @RequiredArgsConstructor
 public class CustomAccessDeniedHandler implements AccessDeniedHandler {
@@ -22,8 +23,8 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response,
                        AccessDeniedException accessDeniedException) throws IOException, ServletException {
-        log.error("[AccessDeniedHandler] {}", accessDeniedException.getMessage(), accessDeniedException);
 
+        // 403 Forbidden 응답 전송
         securityResponseSender.sendError(response, AuthErrorCode.ACCESS_DENIED);
     }
 }
