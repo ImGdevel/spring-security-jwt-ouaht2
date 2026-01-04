@@ -23,6 +23,9 @@ public class SecurityResponseSender {
 
     private final ObjectMapper objectMapper;
 
+    /**
+     * 상태 코드와 메시지를 지정해 에러 JSON을 전송한다.
+     */
     public void sendError(HttpServletResponse response, int status, String message) throws IOException {
         response.setStatus(status);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
@@ -32,6 +35,9 @@ public class SecurityResponseSender {
         response.getWriter().write(objectMapper.writeValueAsString(errorResponse));
     }
 
+    /**
+     * {@link ErrorCode} 기반의 상태 코드/메시지를 적절한 JSON으로 응답한다.
+     */
     public void sendError(HttpServletResponse response, ErrorCode errorCode) throws IOException {
         response.setStatus(errorCode.getHttpStatus().value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
@@ -41,10 +47,16 @@ public class SecurityResponseSender {
         response.getWriter().write(objectMapper.writeValueAsString(errorResponse));
     }
 
+    /**
+     * 메시지만 포함한 성공 응답을 전송한다.
+     */
     public void sendSuccess(HttpServletResponse response, int status, String message) throws IOException {
         sendSuccess(response, status, null, message);
     }
 
+    /**
+     * body 포함 성공 응답을 전송한다.
+     */
     public <T> void sendSuccess(HttpServletResponse response, int status, T body, String message) throws IOException {
         response.setStatus(status);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
