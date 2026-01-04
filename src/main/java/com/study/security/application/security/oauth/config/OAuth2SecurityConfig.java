@@ -1,4 +1,4 @@
-package com.study.security.application.security.config;
+package com.study.security.application.security.oauth.config;
 
 import com.study.security.application.security.oauth.handler.OAuthLoginSuccessHandler;
 import com.study.security.application.security.oauth.repository.HttpCookieOAuth2AuthorizationRequestRepository;

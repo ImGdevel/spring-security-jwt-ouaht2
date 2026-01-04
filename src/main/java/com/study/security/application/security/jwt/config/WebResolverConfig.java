@@ -1,7 +1,7 @@
-package com.study.security.application.security.config;
+package com.study.security.application.security.jwt.config;
 
-import com.study.security.application.security.resolver.CurrentUserArgumentResolver;
-import com.study.security.application.security.resolver.RefreshTokenArgumentResolver;
+import com.study.security.application.security.jwt.resolver.CurrentUserArgumentResolver;
+import com.study.security.application.security.jwt.resolver.RefreshTokenArgumentResolver;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
@@ -10,7 +10,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @RequiredArgsConstructor
-public class WebConfig implements WebMvcConfigurer {
+public class WebResolverConfig implements WebMvcConfigurer {
 
     private final CurrentUserArgumentResolver currentUserArgumentResolver;
     private final RefreshTokenArgumentResolver refreshTokenArgumentResolver;

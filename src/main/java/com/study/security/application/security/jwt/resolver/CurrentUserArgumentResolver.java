@@ -1,6 +1,6 @@
-package com.study.security.application.security.resolver;
+package com.study.security.application.security.jwt.resolver;
 
-import com.study.security.application.security.annotation.CurrentUser;
+import com.study.security.application.security.jwt.annotation.CurrentUser;
 import com.study.security.application.security.local.dto.CustomUserDetails;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;

@@ -1,4 +1,4 @@
-package com.study.security.application.security.annotation;
+package com.study.security.application.security.jwt.annotation;
 
 import io.swagger.v3.oas.annotations.Parameter;
 import java.lang.annotation.Documented;

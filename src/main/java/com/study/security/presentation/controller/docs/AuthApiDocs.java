@@ -1,6 +1,6 @@
 package com.study.security.presentation.controller.docs;
 
-import com.study.security.application.security.annotation.RefreshToken;
+import com.study.security.application.security.jwt.annotation.RefreshToken;
 import com.study.security.application.security.local.dto.SignupRequest;
 import com.study.security.presentation.dto.request.LoginRequest;
 import com.study.security.presentation.dto.response.CheckAvailabilityResponse;

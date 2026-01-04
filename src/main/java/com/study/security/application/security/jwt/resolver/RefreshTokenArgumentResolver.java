@@ -1,6 +1,6 @@
-package com.study.security.application.security.resolver;
+package com.study.security.application.security.jwt.resolver;
 
-import com.study.security.application.security.annotation.RefreshToken;
+import com.study.security.application.security.jwt.annotation.RefreshToken;
 import com.study.security.application.security.jwt.provider.JwtCookieProvider;
 import com.study.security.common.exception.BusinessException;
 import com.study.security.common.exception.code.AuthErrorCode;

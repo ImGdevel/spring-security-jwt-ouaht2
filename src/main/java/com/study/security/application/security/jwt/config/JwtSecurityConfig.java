@@ -1,4 +1,4 @@
-package com.study.security.application.security.config;
+package com.study.security.application.security.jwt.config;
 
 import com.study.security.application.security.jwt.filter.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;

@@ -1,6 +1,7 @@
 package com.study.security.application.security.config;
 
 import com.study.security.application.security.common.constants.SecurityConstants;
+import com.study.security.application.security.jwt.config.JwtSecurityConfig;
 import com.study.security.application.security.local.filter.CustomLoginAuthenticationFilter;
 import com.study.security.application.security.local.filter.CustomLogoutFilter;
 import com.study.security.application.security.exception.filter.FilterChainExceptionFilter;
@@ -8,6 +9,7 @@ import com.study.security.application.security.exception.handler.CustomAccessDen
 import com.study.security.application.security.exception.handler.CustomAuthenticationEntryPoint;
 import com.study.security.application.security.local.handler.LoginFailureHandler;
 import com.study.security.application.security.local.handler.LoginSuccessHandler;
+import com.study.security.application.security.oauth.config.OAuth2SecurityConfig;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
